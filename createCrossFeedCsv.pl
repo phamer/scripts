@@ -27,8 +27,10 @@ for my $i ( 0 .. $#decs ) {
 	# escape!
 	my $s = $decs[$i];
 	$s =~ s/(\*\+|\+|'|0)/^{$1}/g;
+	$s =~ s/\+/\\pm/g;
 	$s =~ s/_([a-zA-Z]+)/_{$1}/g;
-	$s =~ s/(gamma|tau|rho|pi|mu|eta|nu)/\\$1/g;
-	printf( "%s\t%.2f\n", $s, $numbers[$i]*100.0/$sum );
+	$s =~ s/(gamma|tau|rho|pi|mu|eta|nu|omega)/\\$1/g;
+	printf( "\$%s\$\t%.2f\n", $s, $numbers[$i]*100.0/$sum );
 }
+print "sum\t$sum\n";
 
