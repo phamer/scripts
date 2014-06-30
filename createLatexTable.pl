@@ -23,8 +23,11 @@ getopts( "d:i:", \%args ) or Usage();
 
 my $fname = shift || Usage();
 
-my $delim = $args{d} =~ s/\\t/\t/r || " ";
-my $indent = $args{i} =~ s/\\t/\t/r || "  ";
+my $delim = " ";
+my $indent = "  ";
+
+$delim = $args{d} =~ s/\\t/\t/r if $args{d};
+$indent = $args{i} =~ s/\\t/\t/r if $args{i};
 
 open F, "<", $fname;
 my @fcontent = <F>;
