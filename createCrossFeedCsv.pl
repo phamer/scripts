@@ -14,7 +14,7 @@ my (@decs, @numbers);
 my $sum = 0;
 
 for ( @lines ) {
-	if( m/([0-9]+): (.*) \(/ ) {
+	if( m/([0-9.]+): (.*) \(/ ) {
 		my ($n, $dec) = ($1, $2);
 		$dec =~ s/ -.*//;
 		$sum += $n;
