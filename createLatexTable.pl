@@ -14,12 +14,13 @@ sub Usage()
 	print STDERR "              options:\n";
 	print STDERR "                      -d delimiter        [\" \"]\n";
 	print STDERR "                      -i indent-chars     [\"  \"]\n";
+	print STDERR "                      -n : surround numbers by \$\$\n";
 	exit 1;
 }
 
 my %args;
 
-getopts( "d:i:", \%args ) or Usage();
+getopts( "d:i:n", \%args ) or Usage();
 
 my $fname = shift || Usage();
 
@@ -38,6 +39,17 @@ my @header = $fcontent[0] =~ m/^#/ ? split /$delim/, shift( @fcontent ) : ();
 if( $#header > -1 ) {
 	$header[0] =~ s/^# *//;
 	shift @header if $header[0] eq '';
+}
+
+# use surrounding $ for numbers?
+if( $args{n} ) {
+	foreach my $entry (@fcontent) {
+		my @values = split /$delim/, $entry;
+		foreach my $value (@values ) {
+			$value = "\$".$value."\$" if $value =~ m/^[0-9,\.\-\+]+$/;
+		}
+		$entry = join "$delim", @values;
+	}
 }
 
 #
