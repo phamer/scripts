@@ -54,7 +54,7 @@ if( $args{n} ) {
 
 #
 # be a bit smart and assume first col to be some string, rest numbers... :P
-print "\\begin{tabular}{r".("l" x ((scalar split /$delim/, $fcontent[0]) -1 ))."}\n";
+print "\\begin{tabular}{l".("r" x ((scalar split /$delim/, $fcontent[0]) -1 ))."}\n";
 print $indent."\\toprule\n";
 print $indent.join(" & ", @header)." \\\\\n"                         if scalar @header;
 print $indent."\\midrule\n"                                             if scalar @header;
