@@ -11,6 +11,7 @@ use Getopt::Std;
 sub Usage()
 {
 	print STDERR "Usage: createLatexTable.pl [options] inputfile\n";
+	print STDERR "              if inputfile is '-', reads from STDIN\n";
 	print STDERR "              options:\n";
 	print STDERR "                      -d delimiter        [\" \"]\n";
 	print STDERR "                      -i indent-chars     [\"  \"]\n";
@@ -30,9 +31,14 @@ my $indent = "  ";
 $delim = $args{d} =~ s/\\t/\t/r if $args{d};
 $indent = $args{i} =~ s/\\t/\t/r if $args{i};
 
-open F, "<", $fname;
-my @fcontent = <F>;
-close F;
+my @fcontent;
+if( $fname eq '-' ) {
+	@fcontent = <STDIN>;
+} else {
+	open F, "<", $fname;
+	@fcontent = <F>;
+	close F;
+}
 chomp for @fcontent;
 
 my @header = $fcontent[0] =~ m/^#/ ? split /$delim/, shift( @fcontent ) : ();
