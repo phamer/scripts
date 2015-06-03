@@ -41,6 +41,9 @@ if( $fname eq '-' ) {
 }
 chomp for @fcontent;
 
+# remove blank lines at the beginning
+shift( @fcontent ) while $fcontent[0] =~ m/^\s*$/;
+
 my @header = $fcontent[0] =~ m/^#/ ? split /$delim/, shift( @fcontent ) : ();
 if( $#header > -1 ) {
 	$header[0] =~ s/^# *//;
