@@ -35,9 +35,9 @@ my @fcontent;
 if( $fname eq '-' ) {
 	@fcontent = <STDIN>;
 } else {
-	open F, "<", $fname;
-	@fcontent = <F>;
-	close F;
+	open $f, "<", $fname;
+	@fcontent = <$f>;
+	close $f;
 }
 chomp for @fcontent;
 
