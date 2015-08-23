@@ -4,7 +4,7 @@ my %cols;
 my $maxcol = 0;
 while( <> ) {
 	my @tmp = split /-/, $_, 2;
-	if( $tmp[1] =~ m/^ \[([0-9a-zA-Z:,\._]+)\](.*)/ ) {
+	if( $tmp[1] =~ m/^ \[([0-9a-zA-Z:,\._-]+)\](.*)/ ) {
 		my ($topic, $rest) = ($1, $2);
 		my $lctopic = lc($topic);
 		if( ! exists $cols{ $lctopic } ) {
