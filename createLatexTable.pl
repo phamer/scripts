@@ -55,7 +55,8 @@ if( $args{n} ) {
 	foreach my $entry (@fcontent) {
 		my @values = split /$delim/, $entry;
 		foreach my $value (@values ) {
-			$value = "\$".$value."\$" if $value =~ m/^[0-9,\.\-\+]+$/;
+			$value = "\$".$value."\$" if $value =~ m/^[0-9,\.\-\+ \/]+$/;
+			$value =~ s{\+/-}{\\pm}g;
 		}
 		$entry = join "$delim", @values;
 	}
