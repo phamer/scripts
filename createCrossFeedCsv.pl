@@ -4,8 +4,7 @@ use strict;
 use warnings;
 use autodie;
 
-use lib '.';
-use ParticleNames;
+use HEP::Names::LaTeX qw( particle_to_latex );
 
 my $fname = shift || die;
 
@@ -27,7 +26,7 @@ for ( @lines ) {
 }
 
 for my $i ( 0 .. $#decs ) {
-	my $s = ParticleNames::convert( $decs[$i] );
+	my $s = particle_to_latex( $decs[$i] );
 	printf( "\$%s\$\t%.2f\n", $s, $numbers[$i]*100.0/$sum );
 }
 print "sum\t$sum\n";
