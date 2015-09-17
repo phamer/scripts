@@ -31,14 +31,13 @@ foreach my $filename ( @ARGV ) {
 	# first, read file and close it
 	#  will be overwritten below
 	open my $f_old, '<', $filename;
-	my @old_content = <$f_old>;
+	my @content = <$f_old>;
 	close $f_old;
-
-	my @new_content;
 
 	my $in_env = 0;
 	# loop over lines
-	foreach my $line ( @old_content ) {
+	# NB: $line is an alias --> changes to $line will change the entry in @content
+	foreach my $line ( @content ) {
 		# check if a new environment starts
 		if( $line =~ m/\\begin\{([a-z]+)\}/ ) {
 			my $env = $1;
@@ -52,21 +51,25 @@ foreach my $filename ( @ARGV ) {
 		}
 
 		# check if the current environment is the correct one
-		unless( @active_envs && correct_env( $active_envs[ -1 ] ) ) {
-			push @new_content, $line;
-			next;
-		}
+		next unless( @active_envs && correct_env( $active_envs[ -1 ] ) );
 
 		# get new short-caption
 		if( $line =~ m/\\caption/ ) {
+			say "DEBUG DEBUG";
+			say $line;
 			chomp $line;
+
 			# get caption parts
-			my ($front, $short, $long, $end ) = ( $line =~ m/(.*)\\caption(\[[^\]]*\])?(\{.*\})(.*)/ );
+			#    NB: captions may be multi-line
+			#        until I have better caption pattern finding (eg \caption[foo]%
+			#        														{barfoo-long} )
+			#        will NOT be found right now, use the complete line for $long
+			my ($front, $short, $long ) = ( $line =~ m/(.*)\\caption(\[[^\]]*\])?(\{.+)/ );
 
 			$short = '' unless defined $short;
 
 			# query for new short-caption
-			say "[".$active_envs[-1]."]: caption = ".$long;
+			say "\n[".$active_envs[-1]."]: caption = ".$long;
 			say   "     current short-caption = ".$short;
 			print ">>>> new short-caption = ";
 			my $new_short = <STDIN>; chomp $new_short;
@@ -84,15 +87,13 @@ foreach my $filename ( @ARGV ) {
 				'\caption',
 				$new_short,
 				$long,
-				$end,
 				"\n"
 			);
 		}
-		push @new_content, $line;
 	}
 
 	open my $f_new, '>', $filename;
-	print $f_new $_ for @new_content;
+	print $f_new $_ for @content;
 	close $f_new;
 }
 
