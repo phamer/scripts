@@ -55,8 +55,6 @@ foreach my $filename ( @ARGV ) {
 
 		# get new short-caption
 		if( $line =~ m/\\caption/ ) {
-			say "DEBUG DEBUG";
-			say $line;
 			chomp $line;
 
 			# get caption parts
