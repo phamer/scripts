@@ -1,0 +1,34 @@
+#!/usr/bin/env perl
+
+# short script to work git gitColorLogMessage style of git commit messages:
+# topics are given in [] at the start of the commit message
+#
+# this script fetches the log-history and prints out all topics
+
+use warnings;
+use strict;
+use feature 'say';
+
+# get log messages
+my @output = `git log --oneline`;
+
+# topics are stored in hash
+#   keys are the topics
+#   values for existing topics are fixed to 1
+my %topics;
+
+foreach my $line ( @output ) {
+	# output is "<commit-hash> <commit-message>"
+	my ($commit, $msg) = split ' ', $line, 2;
+	# try to extract topic. everything between [] at the beginning of the message
+	if( $msg =~ /^\[([^\]]*)\]/ ) {
+		$topics{ $1 } = 1;
+	}
+}
+
+# print all keys of the topics-hash
+#say join ' ', keys %topics;
+# sort alphabetically
+print "[$_] " foreach ( sort { lc($a) cmp lc($b) } keys %topics );
+print "\n";
+
