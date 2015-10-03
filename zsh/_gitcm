@@ -1,0 +1,17 @@
+#compdef gitcm
+
+#typeset -A opt_args
+
+_gitcm() {
+_arguments -C \
+	'1:message:->msg' \
+	'*:: :->args'
+
+case "$state" in 
+	msg)
+		compadd "$@" $(git-commit-topics)
+  	;;
+esac;
+}
+
+_gitcm "$@"
