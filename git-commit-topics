@@ -9,6 +9,9 @@ use warnings;
 use strict;
 use feature 'say';
 
+# check if we are in a git-repository, exit elsewise
+exit unless ( -d '.git' );
+
 # get log messages
 my @output = `git log --oneline`;
 
